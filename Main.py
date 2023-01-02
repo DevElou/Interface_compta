@@ -1,8 +1,10 @@
+import tkinter
 from tkinter import *
 from tkinter import filedialog
 import Calc_write as fct
 import pathlib
 import pandas as pa
+import Set_filename
 
 
 
@@ -15,15 +17,11 @@ def ouvrir():
 
     global data
     data = fct.read.open(open_path)
-    err.config(text="")
+    err.config(text=f"{open_path}",fg='black')
 
-def creat_suivi():
-    path = filedialog.askopenfilename(title="Ouvrir un fichier de charges fixe",defaultextension=".xlsx",filetypes=[("Xlsx Fichier",".xlsx")])
-    path2 = pathlib.Path(path).parent.resolve()
-    out_path = f"{path2}\Suivi.xlsx"
-    open = fct.read.open(path)
-    file = pa.DataFrame(open,columns=['Date', 'Libellé', 'Catégorie Dépenses', 'Pointé', 'Débit', 'Crédit', 'SOLDE'])
-    file.to_excel(out_path)
+
+def creat_suivi(fenetre):
+    Set_filename.set_filename(fenetre)
 
 def save():
     try:
@@ -64,13 +62,17 @@ fenetre.resizable(width=False, height=False)
 # Frame ajout de ligne
 add_Frame = Frame(fenetre)
 add_Frame.config(width=640,height=360,highlightbackground="black",highlightthickness=1)
-add_Frame.grid(row=0,column=0,sticky="NW")
+add_Frame.grid(row=1,column=0,sticky="SW")
 
 #Frame import fichier
 import_Frame = Frame(fenetre)
 import_Frame.config(width=640,height=360,highlightbackground="black",highlightthickness=1)
-import_Frame.grid(row=1,column=0,sticky="SW")
+import_Frame.grid(row=0,column=0,sticky="NW")
 
+#Frame Affichage infos
+infos_Frame = Frame(fenetre)
+infos_Frame.config(width=640,height=720,highlightbackground="black",highlightthickness=1)
+infos_Frame.place(relx=0.5)
 
 #Contenu add_Frame
 
@@ -141,7 +143,7 @@ btn_save = Button(import_Frame,text=" Sauvegarder le fichier ",command=save)
 btn_save.place(relx=0.5,rely=0.96,anchor=CENTER)
 
 #Boutton creation fichier de suivi
-btn_create = Button(import_Frame,text=" Créer un fichier de suivi ",command= creat_suivi)
+btn_create = Button(import_Frame,text=" Créer un fichier de suivi ",command= lambda :creat_suivi(fenetre))
 btn_create.place(relx=0.2,rely=0.96,anchor=CENTER)
 
 
