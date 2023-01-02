@@ -7,15 +7,13 @@ import pandas as pd
 
 # Ouverture du ficher
 
-fichier = "Suivi.xlsx"
+
 
 def open(name):
     file = pd.read_excel(name)
     data = pd.DataFrame(file, columns=['Date', 'Libellé','Catégorie Dépenses', 'Pointé', 'Débit', 'Crédit', 'SOLDE'])
     data = data.fillna(0)
     return data
-
-data = open(fichier)
 
 # Fonctions
 
