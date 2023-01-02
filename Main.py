@@ -18,9 +18,11 @@ def ouvrir():
     err.config(text="")
 
 def creat_suivi():
-    path = filedialog.askdirectory(title="Ouvrir un fichier de charges fixes")
-    out_path = f"{path}\Suivi.xlsx"
-    file = pa.DataFrame(columns=['Date', 'Libellé', 'Catégorie Dépenses', 'Pointé', 'Débit', 'Crédit', 'SOLDE'])
+    path = filedialog.askopenfilename(title="Ouvrir un fichier de charges fixe",defaultextension=".xlsx",filetypes=[("Xlsx Fichier",".xlsx")])
+    path2 = pathlib.Path(path).parent.resolve()
+    out_path = f"{path2}\Suivi.xlsx"
+    open = fct.read.open(path)
+    file = pa.DataFrame(open,columns=['Date', 'Libellé', 'Catégorie Dépenses', 'Pointé', 'Débit', 'Crédit', 'SOLDE'])
     file.to_excel(out_path)
 
 def save():
