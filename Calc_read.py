@@ -1,5 +1,4 @@
-# Fonctions de calcul
-
+# Fonctions de lecture
 
 # Import
 import numpy as np
@@ -67,7 +66,8 @@ def calc_solde(open_file,Line):
     return solde
 
 
-
+#open = open("Charges_fixe.xlsx")
+#print(open)
 
 
 

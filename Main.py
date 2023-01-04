@@ -1,24 +1,24 @@
-import tkinter
+
 from tkinter import *
 from tkinter import filedialog
 import Calc_write as fct
 import pathlib
-import pandas as pa
 import Set_filename
-
+import os
 
 
 #Ouvre fichier et read.open dans global var
 def ouvrir():
-    open_path = filedialog.askopenfilename(title="Ouvrir un fichier de suivi",defaultextension=".xlsx",filetypes=[("Xlsx Fichier",".xlsx")])
+    global open_file
+    open_file = filedialog.askopenfilename(title="Ouvrir un fichier de suivi",defaultextension=".xlsx",filetypes=[("Xlsx Fichier",".xlsx")])
 
     global path
-    path = pathlib.Path(open_path).parent.resolve()
+    path = pathlib.Path(open_file).parent.resolve()
+    print(path)
 
     global data
-    data = fct.read.open(open_path)
-    err.config(text=f"{open_path}",fg='black')
-
+    data = fct.read.open(open_file)
+    err.config(text=f"{open_file}",fg='black')
 
 def creat_suivi(fenetre):
     Set_filename.set_filename(fenetre)
@@ -30,8 +30,8 @@ def save():
         err.config(text="Veuillez ouvrir un fichier")
     else:
         err.config(text="")
-        fct.save_path(data,"Sauv1",path)
-
+        print(os.path.basename(open_file))
+        fct.save_path(data,os.path.basename(open_file),path)
 
 def add_line():
     try:
