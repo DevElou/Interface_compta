@@ -1,5 +1,4 @@
-import pandas as pd
-
+import datetime
 import Calc_read as read
 
 
@@ -13,9 +12,10 @@ def save(open_file,name):
 def save_path(open_file,name,path):
     out_path = f"{path}\{name}"
     open_file.to_excel(out_path)
-def add_line(open_file,date,lib,cat,deb,cred):
+def add_line(open_file,date,lib,cat,pointe,deb,cred):
     max_ind = open_file.index[-1]
-    open_file.loc[max_ind+1] = [date,lib,cat,0,deb,cred,0]
+    date_encode = datetime.datetime.strptime(date,"%d/%m/%Y")
+    open_file.loc[max_ind+1] = [date_encode,lib,cat,pointe,deb,cred,0]
 
 #Set solde de base
 def set_solde_init(open_file,solde):

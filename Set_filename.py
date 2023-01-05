@@ -10,7 +10,7 @@ def close(entry,solde_preced):
                                       filetypes=[("Xlsx Fichier", ".xlsx")])
     path_parent = pathlib.Path(path).parent.resolve()
 
-    out_path = f"{path_parent}\Suivi_{entry.get()}.xlsx"
+    out_path = f"{path_parent}\Suivi_{entry}.xlsx"
     open = fct.read.open(path)
     file = pa.DataFrame(open, columns=['Date', 'Libellé', 'Catégorie Dépenses', 'Pointé', 'Débit', 'Crédit', 'SOLDE'])
     fct.set_solde_init(file,solde_preced)
@@ -36,5 +36,5 @@ def set_filename(fenetre):
     solde_prec.place(relx=0.36, rely=0.45)
 
     btn_apply = Button(creat_suivi, text=" Ouvriur fichier de charges fixes ",
-                       command=lambda: close(entry,float(solde_prec.get())))
+                       command=lambda: close(entry.get(),float(solde_prec.get())))
     btn_apply.place(relx=0.31, rely=0.73)

@@ -42,7 +42,7 @@ def categorie_dict(open_file):
     return dict
 
 
-def depense_dict(dict,open_file):
+def depense_indict(dict,open_file):
     for cat in dict.keys():
         dep = 0.0
         for ele in open_file.values:
@@ -65,9 +65,12 @@ def calc_solde(open_file,Line):
 
     return solde
 
+def get_solde(open_file):
+    return open_file.loc[len(open_file)-1].values[6]
+
 
 #open = open("Charges_fixe.xlsx")
-#print(open)
+#print(get_solde(open))
 
 
 

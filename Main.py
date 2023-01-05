@@ -1,10 +1,10 @@
-
 from tkinter import *
 from tkinter import filedialog
 import Calc_write as fct
 import pathlib
 import Set_filename
 import os
+import Calc_read as read
 
 
 #Ouvre fichier et read.open dans global var
@@ -14,10 +14,9 @@ def ouvrir():
 
     global path
     path = pathlib.Path(open_file).parent.resolve()
-    print(path)
 
     global data
-    data = fct.read.open(open_file)
+    data = read.open(open_file)
     err.config(text=f"{open_file}",fg='black')
 
 def creat_suivi(fenetre):
@@ -30,7 +29,6 @@ def save():
         err.config(text="Veuillez ouvrir un fichier")
     else:
         err.config(text="")
-        print(os.path.basename(open_file))
         fct.save_path(data,os.path.basename(open_file),path)
 
 def add_line():
@@ -39,7 +37,7 @@ def add_line():
     except NameError:
         err.config(text="Veuillez ouvrir un fichier")
     else:
-        fct.add_line(data, date_entry.get(),str(libelle_entry.get()),str(cat_entry.get()),int(Debit_entry.get()),int(Credit_entry.get()))
+        fct.add_line(data, date_entry.get(),str(libelle_entry.get()),str(cat_entry.get()),Pointe_entry.get(),int(Debit_entry.get()),int(Credit_entry.get()))
         last_line = len(data) -1
         fct.write_solde(data,last_line)
 
@@ -51,6 +49,21 @@ def add_line():
         Credit_entry.delete(0,END)
         Debit_entry.delete(0,END)
 
+def affichage_cat():
+    try:
+        data
+    except NameError:
+        err.config(text="Veuillez ouvrir un fichier")
+    else:
+        dico_cat = read.categorie_dict(data)
+        dico_all = read.depense_indict(dico_cat, data)
+        text = ""
+        for (key, value) in dico_all.items():
+            text += f"{key} : {value}\n\n"
+        cat.config(text=text,font=("Helvetica",13,"bold"))
+        solde.config(text=f"Solde restant : {read.get_solde(data)}",font=("Helvetica",10,"bold"))
+        tot_depense.config(text=f"Total des dépenses : {read.debit(data)}",font=("Helvetica",10,"bold"))
+        tot_gain.config(text=f"Total des gains : {read.credit(data)}",font=("Helvetica",10,"bold"))
 
 
 # Creation de la fenêtre
@@ -74,6 +87,10 @@ infos_Frame = Frame(fenetre)
 infos_Frame.config(width=640,height=720,highlightbackground="black",highlightthickness=1)
 infos_Frame.place(relx=0.5)
 
+
+
+
+
 #Contenu add_Frame
 
 add_titre = Label(add_Frame,text="Ajouter un débit ou crédit",font=("Helvetica",15,"bold"))
@@ -85,21 +102,21 @@ info_add.place(relx=0.5, rely=0.1, anchor=CENTER)
 
 
 #add Date
-date_lab = Label(add_Frame,text="Date : ")
+date_lab = Label(add_Frame,text="Date (J/M/A): ")
 date_entry = Entry(add_Frame)
-date_lab.place(relx=0.43,rely=0.16,anchor=CENTER)
+date_lab.place(relx=0.462,rely=0.16,anchor=CENTER)
 date_entry.place(relx=0.5,rely=0.21,anchor=CENTER)
 
 #add libelle
 libelle_lab = Label(add_Frame,text="Libellé : ")
 libelle_entry = Entry(add_Frame)
-libelle_lab.place(relx=0.436,rely=0.27,anchor=CENTER)
+libelle_lab.place(relx=0.437,rely=0.27,anchor=CENTER)
 libelle_entry.place(relx=0.5,rely=0.32,anchor=CENTER)
 
 #add catégorie
 cat_lab = Label(add_Frame,text="Catégorie Dépenses : ")
 cat_entry = Entry(add_Frame)
-cat_lab.place(relx=0.49,rely=0.39,anchor=CENTER)
+cat_lab.place(relx=0.492,rely=0.39,anchor=CENTER)
 cat_entry.place(relx=0.5,rely=0.44,anchor=CENTER)
 
 #add pointé
@@ -125,6 +142,8 @@ Credit_entry.place(relx=0.5,rely=0.77,anchor=CENTER)
 btn_add = Button(add_Frame,text="Ajouter la ligne",command= lambda: add_line())
 btn_add.place(relx=0.5,rely=0.87,anchor=CENTER)
 
+
+
 #Contenu import_frame
 import_titre = Label(import_Frame,text="Importer un fichier de compte",font=("Helvetica",15,"bold"))
 import_titre.place(relx=0.5, rely=0.05, anchor=CENTER)
@@ -146,5 +165,30 @@ btn_save.place(relx=0.5,rely=0.96,anchor=CENTER)
 btn_create = Button(import_Frame,text=" Créer un fichier de suivi ",command= lambda :creat_suivi(fenetre))
 btn_create.place(relx=0.2,rely=0.96,anchor=CENTER)
 
+#Boutton affichage des infos
+btn_infos = Button(import_Frame,text=" Calculer ",command= affichage_cat)
+btn_infos.place(relx=0.75,rely=0.96,anchor=CENTER)
+
+
+
+#Infos Frame
+#Affichage des catégories
+info_infos = Label(infos_Frame,text=" Ne pas oublier de Sauvegarder le fichier pour enregistrer les modifications ",font=("Helvetica",8))
+info_infos.place(relx=0.5, rely=0.02, anchor=CENTER)
+
+#Labael affichant les catégories
+cat = Label(infos_Frame,text="",font=("Helvetica",10))
+cat.place(relx=0.30,rely=0.06)
+
+#Labelle affichant les gains les debits et le solde restant
+
+tot_gain = Label(infos_Frame,text="",font=("Helvetica",10))
+tot_gain.place(relx=0.05,rely=0.90)
+
+tot_depense = Label(infos_Frame,text="",font=("Helvetica",10))
+tot_depense.place(relx=0.35,rely=0.90)
+
+solde = Label(infos_Frame,text="",font=("Helvetica",10))
+solde.place(relx=0.70,rely=0.90)
 
 fenetre.mainloop()
