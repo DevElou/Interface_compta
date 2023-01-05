@@ -5,6 +5,7 @@ import pathlib
 import Set_filename
 import os
 import Calc_read as read
+import Data_screen
 
 
 #Ouvre fichier et read.open dans global var
@@ -22,6 +23,8 @@ def ouvrir():
 def creat_suivi(fenetre):
     Set_filename.set_filename(fenetre)
 
+def screenData(fentere):
+    Data_screen.set_filename(fentere,data)
 def save():
     try:
         data
@@ -159,19 +162,25 @@ btn_import.place(relx=0.5,rely=0.49,anchor=CENTER)
 
 #Boutton save (import_Frame)
 btn_save = Button(import_Frame,text=" Sauvegarder le fichier ",command=save)
-btn_save.place(relx=0.5,rely=0.96,anchor=CENTER)
+btn_save.place(relx=0.45,rely=0.96,anchor=CENTER)
 
 #Boutton creation fichier de suivi
 btn_create = Button(import_Frame,text=" Créer un fichier de suivi ",command= lambda :creat_suivi(fenetre))
-btn_create.place(relx=0.2,rely=0.96,anchor=CENTER)
+btn_create.place(relx=0.16,rely=0.96,anchor=CENTER)
 
-#Boutton affichage des infos
-btn_infos = Button(import_Frame,text=" Calculer ",command= affichage_cat)
-btn_infos.place(relx=0.75,rely=0.96,anchor=CENTER)
+#Boutton affichage le tableau
+btn_tab = Button(import_Frame,text=" Afficher le tableau ",command= lambda : screenData(fenetre))
+btn_tab.place(relx=0.68,rely=0.96,anchor=CENTER)
 
+#
 
 
 #Infos Frame
+
+#Boutton affichage des infos
+btn_infos = Button(infos_Frame,text=" Calculer ",command= affichage_cat)
+btn_infos.place(relx=0.5,rely=0.96,anchor=CENTER)
+
 #Affichage des catégories
 info_infos = Label(infos_Frame,text=" Ne pas oublier de Sauvegarder le fichier pour enregistrer les modifications ",font=("Helvetica",8))
 info_infos.place(relx=0.5, rely=0.02, anchor=CENTER)
