@@ -3,7 +3,7 @@ from tkinter import filedialog
 import pathlib
 import Calc_write as fct
 import pandas as pa
-
+from tkinter.messagebox import *
 
 def close(entry,solde_preced):
     path = filedialog.askopenfilename(title="Ouvrir un fichier de charges fixe", defaultextension=".xlsx",
@@ -16,12 +16,13 @@ def close(entry,solde_preced):
     fct.set_solde_init(file,solde_preced)
     fct.recalc_solde(file)
     file.to_excel(out_path)
+    showinfo(title=" Création du fichier de suivi", message=" Votre fichier de suivi a été crée avec succés.")
 
 
 def set_filename(fenetre):
     creat_suivi = Toplevel(fenetre)
     creat_suivi.geometry("500x150")
-    creat_suivi.title("Entrez un nom de fichier")
+    creat_suivi.title("Création du fichier de suivi")
 
     label = Label(creat_suivi, text="Mois : ")
     label.place(relx=0.15, rely=0.28)

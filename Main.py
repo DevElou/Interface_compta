@@ -2,6 +2,8 @@ from tkinter import *
 from tkinter import filedialog
 import Calc_write as fct
 import pathlib
+
+import Creat_charges_fixes
 import Set_filename
 import os
 import Calc_read as read
@@ -23,8 +25,16 @@ def ouvrir():
 def creat_suivi(fenetre):
     Set_filename.set_filename(fenetre)
 
+def creat_fix(fenetre):
+    Creat_charges_fixes.open_creators(fenetre)
+
 def screenData(fentere):
-    Data_screen.set_filename(fentere,data)
+    try:
+        data
+    except NameError:
+        err.config(text="Veuillez ouvrir un fichier")
+    else:
+        Data_screen.tabl_screen(fentere,data)
 def save():
     try:
         data
@@ -40,7 +50,7 @@ def add_line():
     except NameError:
         err.config(text="Veuillez ouvrir un fichier")
     else:
-        fct.add_line(data, date_entry.get(),str(libelle_entry.get()),str(cat_entry.get()),Pointe_entry.get(),int(Debit_entry.get()),int(Credit_entry.get()))
+        fct.add_line(data, date_entry.get(),str(libelle_entry.get()),str(cat_entry.get()),Pointe_entry.get(),float(Debit_entry.get()),float(Credit_entry.get()))
         last_line = len(data) -1
         fct.write_solde(data,last_line)
 
@@ -62,11 +72,11 @@ def affichage_cat():
         dico_all = read.depense_indict(dico_cat, data)
         text = ""
         for (key, value) in dico_all.items():
-            text += f"{key} : {value}\n\n"
+            text += f"{key} : {value}€\n\n"
         cat.config(text=text,font=("Helvetica",13,"bold"))
-        solde.config(text=f"Solde restant : {read.get_solde(data)}",font=("Helvetica",10,"bold"))
-        tot_depense.config(text=f"Total des dépenses : {read.debit(data)}",font=("Helvetica",10,"bold"))
-        tot_gain.config(text=f"Total des gains : {read.credit(data)}",font=("Helvetica",10,"bold"))
+        solde.config(text=f"Solde restant : {read.get_solde(data)}€",font=("Helvetica",10,"bold"))
+        tot_depense.config(text=f"Total des dépenses : {read.debit(data)}€",font=("Helvetica",10,"bold"))
+        tot_gain.config(text=f"Total des crédits : {read.credit(data)}€",font=("Helvetica",10,"bold"))
 
 
 # Creation de la fenêtre
@@ -142,13 +152,13 @@ Credit_lab.place(relx=0.434,rely=0.72,anchor=CENTER)
 Credit_entry.place(relx=0.5,rely=0.77,anchor=CENTER)
 
 #Bouton add_line
-btn_add = Button(add_Frame,text="Ajouter la ligne",command= lambda: add_line())
+btn_add = Button(add_Frame,text=" Ajouter la ligne ",command= lambda: add_line())
 btn_add.place(relx=0.5,rely=0.87,anchor=CENTER)
 
 
 
 #Contenu import_frame
-import_titre = Label(import_Frame,text="Importer un fichier de compte",font=("Helvetica",15,"bold"))
+import_titre = Label(import_Frame,text=" Importer un fichier de compte ",font=("Helvetica",15,"bold"))
 import_titre.place(relx=0.5, rely=0.05, anchor=CENTER)
 
 
@@ -157,37 +167,46 @@ err = Label(import_Frame,text="",font=("Helvetica",10),fg='red')
 err.place(relx=0.5, rely=0.55, anchor=CENTER)
 
 #Boutton ouvrir fichier(import_Frame)
-btn_import = Button(import_Frame,text="Ouvrir un fichier de Suivi",command=ouvrir)
+btn_import = Button(import_Frame,text=" Ouvrir un fichier de Suivi ",command=ouvrir)
 btn_import.place(relx=0.5,rely=0.49,anchor=CENTER)
 
 #Boutton save (import_Frame)
 btn_save = Button(import_Frame,text=" Sauvegarder le fichier ",command=save)
-btn_save.place(relx=0.45,rely=0.96,anchor=CENTER)
+btn_save.place(relx=0.495,rely=0.96,anchor=CENTER)
 
 #Boutton creation fichier de suivi
 btn_create = Button(import_Frame,text=" Créer un fichier de suivi ",command= lambda :creat_suivi(fenetre))
 btn_create.place(relx=0.16,rely=0.96,anchor=CENTER)
 
-#Boutton affichage le tableau
-btn_tab = Button(import_Frame,text=" Afficher le tableau ",command= lambda : screenData(fenetre))
-btn_tab.place(relx=0.68,rely=0.96,anchor=CENTER)
+#Boutton créer fichier de Charges fixes
+btn_charge_fix = Button(import_Frame,text=" Créer un fichier de charges fixes ",command= lambda :creat_fix(fenetre))
+btn_charge_fix.place(relx=0.80,rely=0.96,anchor=CENTER)
 
-#
 
 
 #Infos Frame
 
-#Boutton affichage des infos
-btn_infos = Button(infos_Frame,text=" Calculer ",command= affichage_cat)
-btn_infos.place(relx=0.5,rely=0.96,anchor=CENTER)
+#Titre
+infos_titre = Label(infos_Frame,text=" Affichage des données ",font=("Helvetica",15,"bold"))
+infos_titre.place(relx=0.5, rely=0.0248, anchor=CENTER)
 
 #Affichage des catégories
 info_infos = Label(infos_Frame,text=" Ne pas oublier de Sauvegarder le fichier pour enregistrer les modifications ",font=("Helvetica",8))
-info_infos.place(relx=0.5, rely=0.02, anchor=CENTER)
+info_infos.place(relx=0.5, rely=0.05, anchor=CENTER)
+
+#Boutton affichage le tableau
+btn_tab = Button(infos_Frame,text=" Afficher le tableau ",command= lambda : screenData(fenetre))
+btn_tab.place(relx=0.65,rely=0.96,anchor=CENTER)
+
+#Boutton affichage des infos
+btn_infos = Button(infos_Frame,text=" Calculer les données ",command= affichage_cat)
+btn_infos.place(relx=0.35,rely=0.96,anchor=CENTER)
+
+
 
 #Labael affichant les catégories
 cat = Label(infos_Frame,text="",font=("Helvetica",10))
-cat.place(relx=0.30,rely=0.06)
+cat.place(relx=0.32,rely=0.083)
 
 #Labelle affichant les gains les debits et le solde restant
 
@@ -195,7 +214,7 @@ tot_gain = Label(infos_Frame,text="",font=("Helvetica",10))
 tot_gain.place(relx=0.05,rely=0.90)
 
 tot_depense = Label(infos_Frame,text="",font=("Helvetica",10))
-tot_depense.place(relx=0.35,rely=0.90)
+tot_depense.place(relx=0.355,rely=0.90)
 
 solde = Label(infos_Frame,text="",font=("Helvetica",10))
 solde.place(relx=0.70,rely=0.90)

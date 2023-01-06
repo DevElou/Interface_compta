@@ -13,13 +13,22 @@ def save_path(open_file,name,path):
     out_path = f"{path}\{name}"
     open_file.to_excel(out_path)
 def add_line(open_file,date,lib,cat,pointe,deb,cred):
-    max_ind = open_file.index[-1]
-    date_encode = datetime.datetime.strptime(date,"%d/%m/%Y")
+    if len(open_file) == 0:
+        max_ind = 0
+    else:
+        max_ind = open_file.index[-1]
+
+    if date == "":
+        date_encode = ""
+    else:
+        date_encode = datetime.datetime.strptime(date,"%d/%m/%Y")
     open_file.loc[max_ind+1] = [date_encode,lib,cat,pointe,deb,cred,0]
+    print(open_file)
 
 #Set solde de base
 def set_solde_init(open_file,solde):
     open_file.loc[0, ['SOLDE']] = float(solde)
+    open_file.loc[0, ['Débit']] = 0
     open_file.loc[0, ['Libellé']] = "SOLDE INITIALE"
 
 def recalc_solde(open_file):
