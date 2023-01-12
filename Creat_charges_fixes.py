@@ -1,12 +1,9 @@
 from tkinter import *
 from tkinter import filedialog
 import pandas as pd
+import Calc_write
 import Calc_write as fct
-import pathlib
-import Set_filename
-import os
-import Calc_read as read
-import Data_screen
+
 
 
 
@@ -18,9 +15,9 @@ def open_creators(fenetre):
     creators.title("Création du fichier de charges fixe")
 
     def add_line():
-        fct.add_line(open_dataframe,date_entry.get(),libelle_entry.get(),cat_entry.get(),Pointe_entry.get(),Debit_entry.get(),Credit_entry.get())
-        last_line = len(open_dataframe) - 1
-        fct.write_solde(open_dataframe, last_line)
+        fct.add_line(open_dataframe,date_entry.get(),libelle_entry.get(),cat_entry.get(),Pointe_entry.get(),float(Debit_entry.get()),float(Credit_entry.get()))
+        last_line = len(open_dataframe) -1
+        fct.write_solde(open_dataframe,last_line)
 
         # Clear tous les champs
         date_entry.delete(0, END)
@@ -29,10 +26,14 @@ def open_creators(fenetre):
         Pointe_entry.delete(0, END)
         Credit_entry.delete(0, END)
         Debit_entry.delete(0, END)
-
+    def save():
+        out_dir = directory + "/Charges_fixes.xlsx"
+        fct.save(open_dataframe,out_dir)
 
     open_dataframe = pd.DataFrame(columns=['Date', 'Libellé','Catégorie Dépenses', 'Pointé', 'Débit', 'Crédit', 'SOLDE'])
-    #fct.add_line(open_dataframe, 0/0/0, "SOLDE INITIALE", "", "", 0, 0)
+    Calc_write.set_solde_init(open_dataframe,0.0)
+    open_dataframe = open_dataframe.fillna(0)
+
 
 
 
@@ -84,3 +85,7 @@ def open_creators(fenetre):
     # Bouton add_line
     btn_add = Button(creators, text=" Ajouter la ligne ", command=lambda: add_line())
     btn_add.place(relx=0.5, rely=0.87, anchor=CENTER)
+
+    #Btn save
+    btn_save = Button(creators, text="  Sauvegarder  ", command=lambda: save())
+    btn_save.place(relx=0.5, rely=0.95, anchor=CENTER)

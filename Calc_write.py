@@ -29,6 +29,7 @@ def add_line(open_file,date,lib,cat,pointe,deb,cred):
 def set_solde_init(open_file,solde):
     open_file.loc[0, ['SOLDE']] = float(solde)
     open_file.loc[0, ['Débit']] = 0
+    open_file.loc[0, ['Crédit']] = 0
     open_file.loc[0, ['Libellé']] = "SOLDE INITIALE"
 
 def recalc_solde(open_file):

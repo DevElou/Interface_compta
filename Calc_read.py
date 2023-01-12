@@ -57,6 +57,7 @@ def depense_indict(dict,open_file):
 def calc_solde(open_file,Line):
     line = open_file.loc[[Line]]
     line_preced = open_file.loc[[Line-1]]
+
     solde = 0
     if line.values[0][4] == 0:
         solde = line.values[0][5] + line_preced.values[0][6]

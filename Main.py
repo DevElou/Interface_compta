@@ -155,6 +155,10 @@ Credit_entry.place(relx=0.5,rely=0.77,anchor=CENTER)
 btn_add = Button(add_Frame,text=" Ajouter la ligne ",command= lambda: add_line())
 btn_add.place(relx=0.5,rely=0.87,anchor=CENTER)
 
+#Boutton save (import_Frame)
+btn_save = Button(add_Frame,text=" Sauvegarder le fichier ",command=save)
+btn_save.place(relx=0.88,rely=0.95,anchor=CENTER)
+
 
 
 #Contenu import_frame
@@ -170,18 +174,17 @@ err.place(relx=0.5, rely=0.55, anchor=CENTER)
 btn_import = Button(import_Frame,text=" Ouvrir un fichier de Suivi ",command=ouvrir)
 btn_import.place(relx=0.5,rely=0.49,anchor=CENTER)
 
-#Boutton save (import_Frame)
-btn_save = Button(import_Frame,text=" Sauvegarder le fichier ",command=save)
-btn_save.place(relx=0.495,rely=0.96,anchor=CENTER)
 
 #Boutton creation fichier de suivi
 btn_create = Button(import_Frame,text=" Créer un fichier de suivi ",command= lambda :creat_suivi(fenetre))
-btn_create.place(relx=0.16,rely=0.96,anchor=CENTER)
+btn_create.place(relx=0.109,rely=0.88,anchor=CENTER)
 
 #Boutton créer fichier de Charges fixes
 btn_charge_fix = Button(import_Frame,text=" Créer un fichier de charges fixes ",command= lambda :creat_fix(fenetre))
-btn_charge_fix.place(relx=0.80,rely=0.96,anchor=CENTER)
+btn_charge_fix.place(relx=0.144,rely=0.96,anchor=CENTER)
 
+infos_crea = Label(import_Frame,text=" Création de fichiers:",font=("Helvetica",10,"bold"))
+infos_crea.place(relx=0.109, rely=0.80, anchor=CENTER)
 
 
 #Infos Frame
